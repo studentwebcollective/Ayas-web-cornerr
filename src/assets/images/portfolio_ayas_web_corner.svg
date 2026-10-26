@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FAF8F5"/>
+      <stop offset="100%" stop-color="#F2EDE8"/>
+    </linearGradient>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#2A2426" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="500" fill="url(#bg)"/>
+
+  <!-- Browser window container -->
+  <g transform="translate(40, 30)" filter="url(#shadow)">
+    <!-- Browser chrome -->
+    <rect width="720" height="440" rx="16" fill="#FFFFFF" stroke="#E6DDD5" stroke-width="1.5"/>
+    <path d="M 0 16 C 0 7.16 7.16 0 16 0 L 704 0 C 712.84 0 720 7.16 720 16 L 720 48 L 0 48 Z" fill="#F8F5F1" stroke="#E6DDD5" stroke-width="1.5"/>
+    
+    <!-- Window controls -->
+    <circle cx="28" cy="24" r="5" fill="#E8B4B8"/>
+    <circle cx="46" cy="24" r="5" fill="#E8D5B5"/>
+    <circle cx="64" cy="24" r="5" fill="#BCE0C7"/>
+
+    <!-- URL Bar -->
+    <rect x="180" y="12" width="360" height="24" rx="12" fill="#FFFFFF" stroke="#E2D7CE" stroke-width="1"/>
+    <text x="360" y="28" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" fill="#7A6E72" text-anchor="middle">ayaswebcorner.nl</text>
+
+    <!-- Content area -->
+    <!-- Brand header -->
+    <g transform="translate(40, 75)">
+      <rect x="0" y="0" width="36" height="36" rx="8" fill="#F2EDE8" stroke="#DDD3CA" stroke-width="1"/>
+      <text x="18" y="23" font-family="Georgia, serif" font-size="16" font-weight="bold" fill="#2A2426" text-anchor="middle">A</text>
+      
+      <text x="48" y="16" font-family="Georgia, serif" font-size="15" font-weight="bold" fill="#2A2426">Aya's Web Corner</text>
+      <text x="48" y="30" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="10" fill="#887C80">Based in Rotterdam · Est. 06 2026</text>
+
+      <!-- Menu burger icon -->
+      <line x1="610" y1="12" x2="636" y2="12" stroke="#2A2426" stroke-width="2" stroke-linecap="round"/>
+      <line x1="610" y1="18" x2="636" y2="18" stroke="#2A2426" stroke-width="2" stroke-linecap="round"/>
+      <line x1="610" y1="24" x2="636" y2="24" stroke="#2A2426" stroke-width="2" stroke-linecap="round"/>
+    </g>
+
+    <!-- Big Hero Title -->
+    <text x="360" y="170" font-family="Georgia, serif" font-size="28" font-weight="bold" fill="#2A2426" text-anchor="middle">Welkom bij Aya's Web Corner</text>
+    <text x="360" y="195" font-family="Georgia, serif" font-size="13" font-style="italic" fill="#2A2426" text-anchor="middle">Eenvoudig, stijlvol &amp; betaalbaar online voor ondernemers.</text>
+
+    <!-- 4 Navigation cards mockup -->
+    <g transform="translate(60, 220)">
+      <!-- Card 1 -->
+      <rect x="0" y="0" width="285" height="64" rx="10" fill="#FFFFFF" stroke="#E8DFD7" stroke-width="1"/>
+      <text x="16" y="26" font-family="Georgia, serif" font-size="13" font-weight="bold" fill="#2A2426">Over Mij</text>
+      <text x="260" y="26" font-family="-apple-system, sans-serif" font-size="12" fill="#2A2426">→</text>
+      <text x="16" y="45" font-family="-apple-system, sans-serif" font-size="10" fill="#786D71">Mijn verhaal als student in Rotterdam</text>
+
+      <!-- Card 2 -->
+      <rect x="315" y="0" width="285" height="64" rx="10" fill="#FFFFFF" stroke="#E8DFD7" stroke-width="1"/>
+      <text x="331" y="26" font-family="Georgia, serif" font-size="13" font-weight="bold" fill="#2A2426">Garantie &amp; Tarieven</text>
+      <text x="575" y="26" font-family="-apple-system, sans-serif" font-size="12" fill="#2A2426">→</text>
+      <text x="331" y="45" font-family="-apple-system, sans-serif" font-size="10" fill="#786D71">3 maanden gratis garantie &amp; eerlijke prijzen</text>
+
+      <!-- Card 3 -->
+      <rect x="0" y="76" width="285" height="64" rx="10" fill="#FFFFFF" stroke="#E8DFD7" stroke-width="1"/>
+      <text x="16" y="102" font-family="Georgia, serif" font-size="13" font-weight="bold" fill="#2A2426">Hoe Bestellen Werkt</text>
+      <text x="260" y="102" font-family="-apple-system, sans-serif" font-size="12" fill="#2A2426">→</text>
+      <text x="16" y="121" font-family="-apple-system, sans-serif" font-size="10" fill="#786D71">In eenvoudige stappen van jouw idee naar livegang</text>
+
+      <!-- Card 4 -->
+      <rect x="315" y="76" width="285" height="64" rx="10" fill="#FFFFFF" stroke="#E8DFD7" stroke-width="1"/>
+      <text x="331" y="102" font-family="Georgia, serif" font-size="13" font-weight="bold" fill="#2A2426">Aanvraag &amp; Vragenlijst</text>
+      <text x="575" y="102" font-family="-apple-system, sans-serif" font-size="12" fill="#2A2426">→</text>
+      <text x="331" y="121" font-family="-apple-system, sans-serif" font-size="10" fill="#786D71">Vul de vragenlijst in om een one-pager aan te vragen</text>
+    </g>
+
+    <!-- Bottom Badge -->
+    <rect x="250" y="380" width="220" height="28" rx="8" fill="#2A2426"/>
+    <text x="360" y="398" font-family="-apple-system, sans-serif" font-size="11" font-weight="bold" fill="#FFFFFF" text-anchor="middle">Live Website Bekijken ↗</text>
+  </g>
+</svg>

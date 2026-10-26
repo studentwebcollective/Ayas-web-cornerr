@@ -1,0 +1,48 @@
+{
+  "entities": {
+    "siteContent": {
+      "title": "Site Content",
+      "description": "The configuration, texts, and content of the entire website",
+      "type": "object",
+      "properties": {
+        "brandName": { "type": "string", "description": "Brand name displayed on the website" },
+        "subtitle": { "type": "string", "description": "Subtitle displayed on the website" },
+        "home": { "type": "object", "description": "Home page texts and settings" },
+        "about": { "type": "object", "description": "About page texts and settings" },
+        "warranty": { "type": "object", "description": "Warranty page texts and settings" },
+        "websites": { "type": "array", "description": "Portfolio websites list" },
+        "howToOrder": { "type": "object", "description": "How to order page texts and steps" },
+        "contact": { "type": "object", "description": "Contact page texts" },
+        "disclaimer": { "type": "object", "description": "Disclaimer page content" },
+        "logoImage": { "type": "string", "description": "Logo image data URL or path" },
+        "logoScale": { "type": "number", "description": "Logo zoom scale percentage" }
+      }
+    },
+    "inquiry": {
+      "title": "Contact Inquiry",
+      "description": "Form inquiries submitted by prospective clients",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique identifier for inquiry" },
+        "name": { "type": "string", "description": "Client name" },
+        "email": { "type": "string", "description": "Client email" },
+        "phone": { "type": "string", "description": "Client phone number" },
+        "business": { "type": "string", "description": "Client business name" },
+        "message": { "type": "string", "description": "Client message or inquiry notes" },
+        "createdAt": { "type": "string", "description": "Date and time of submission" },
+        "status": { "type": "string", "description": "Status of inquiry: nieuw or behandeld" }
+      },
+      "required": ["name", "email", "createdAt", "status"]
+    }
+  },
+  "firestore": {
+    "/site/{siteId}": {
+      "schema": "siteContent",
+      "description": "Stores central website content document"
+    },
+    "/inquiries/{inquiryId}": {
+      "schema": "inquiry",
+      "description": "Stores client contact form inquiries"
+    }
+  }
+}

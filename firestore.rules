@@ -1,0 +1,30 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Global default-deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // Site content configuration - public read, admin update
+    match /site/{siteId} {
+      allow get: if isValidId(siteId);
+      allow list: if true;
+      allow write: if isValidId(siteId);
+    }
+
+    // Contact form inquiries submitted by customers
+    match /inquiries/{inquiryId} {
+      allow get: if isValidId(inquiryId);
+      allow list: if true;
+      allow create: if isValidId(inquiryId) &&
+        request.resource.data.name is string &&
+        request.resource.data.email is string;
+      allow update, delete: if isValidId(inquiryId);
+    }
+  }
+}
