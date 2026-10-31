@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useSiteContent } from '../context/SiteContentContext';
-import { CheckCircle2, Send, ClipboardList } from 'lucide-react';
+import { CheckCircle2, Send, ClipboardList, X, ShieldCheck } from 'lucide-react';
 
 export const SimpleContactPage: React.FC = () => {
   const { data, addInquiry } = useSiteContent();
-  const { contact } = data;
+  const { contact, disclaimer, warranty } = data;
 
   const [formData, setFormData] = useState({
     name: '',
@@ -16,6 +16,8 @@ export const SimpleContactPage: React.FC = () => {
     message: ''
   });
 
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [showDisclaimerModal, setShowDisclaimerModal] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
 
@@ -23,6 +25,11 @@ export const SimpleContactPage: React.FC = () => {
     e.preventDefault();
     if (!formData.name.trim() || !formData.email.trim()) {
       setError('Vul alsjeblieft minimaal je naam en e-mailadres in.');
+      return;
+    }
+
+    if (!acceptedTerms) {
+      setError('Vink alsjeblieft aan dat je akkoord gaat met de Algemene Voorwaarden & Disclaimer om je aanvraag te kunnen verzenden.');
       return;
     }
 
@@ -76,6 +83,7 @@ export const SimpleContactPage: React.FC = () => {
               <button
                 onClick={() => {
                   setSubmitted(false);
+                  setAcceptedTerms(false);
                   setFormData({
                     name: '',
                     email: '',
@@ -95,7 +103,7 @@ export const SimpleContactPage: React.FC = () => {
         ) : (
           <form onSubmit={handleSubmit} className="space-y-5">
             <h2 className="font-serif text-xl text-[#2A2426] border-b border-[#F7E1E8] pb-2">
-              Inschrijven voor een One-Page Website (€79)
+              Inschrijven voor een One-Page Website
             </h2>
 
             {/* Naam & Email */}
@@ -207,8 +215,39 @@ export const SimpleContactPage: React.FC = () => {
               />
             </div>
 
+            {/* Optie A (met een vinkje): Algemene Voorwaarden & Disclaimer */}
+            <div className="pt-2 pb-1 border-t border-[#F2DEE4]">
+              <label className="flex items-start gap-3 cursor-pointer select-none group">
+                <input
+                  type="checkbox"
+                  required
+                  checked={acceptedTerms}
+                  onChange={(e) => {
+                    setAcceptedTerms(e.target.checked);
+                    if (error && e.target.checked) setError('');
+                  }}
+                  className="mt-0.5 h-4 w-4 rounded border-[#D3BCC4] text-[#2A2426] accent-[#2A2426] focus:ring-[#2A2426] cursor-pointer shrink-0"
+                />
+                <span className="text-xs text-[#463D40] leading-relaxed">
+                  Ik ga akkoord met de{' '}
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setShowDisclaimerModal(true);
+                    }}
+                    className="font-semibold underline text-[#2A2426] hover:text-black cursor-pointer inline"
+                    title="Lees de voorwaarden & disclaimer"
+                  >
+                    Algemene Voorwaarden & Disclaimer
+                  </button>
+                  . <span className="text-[#A14761] font-semibold">*</span>
+                </span>
+              </label>
+            </div>
+
             {error && (
-              <p className="text-xs text-red-500 font-medium">
+              <p className="text-xs text-red-600 font-medium bg-red-50 p-2.5 rounded-lg border border-red-200">
                 {error}
               </p>
             )}
@@ -229,8 +268,69 @@ export const SimpleContactPage: React.FC = () => {
       </div>
 
       <div className="text-xs text-[#7A6E72]">
-        E-mail contact: <a href={`mailto:${data.email}`} className="underline text-[#2A2426]">{data.email}</a> · Rotterdam
+        E-mail contact: <a href={`mailto:${data.email || 'ayaswebcorner@gmail.com'}`} className="underline text-[#2A2426]">{data.email || 'ayaswebcorner@gmail.com'}</a> · Rotterdam
       </div>
+
+      {/* Direct Modal to review Algemene Voorwaarden & Disclaimer without losing form progress */}
+      {showDisclaimerModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/60 backdrop-blur-xs">
+          <div className="w-full max-w-2xl max-h-[85vh] bg-[#FAF7F2] rounded-2xl shadow-2xl flex flex-col border border-[#E4D9D0] overflow-hidden">
+            <div className="p-5 bg-white border-b border-[#E8DFD8] flex items-center justify-between shrink-0">
+              <div className="flex items-center gap-2 text-[#2A2426]">
+                <ShieldCheck size={20} />
+                <h3 className="font-serif text-lg font-bold">
+                  {disclaimer.title || 'Algemene Voorwaarden & Disclaimer'}
+                </h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowDisclaimerModal(false)}
+                className="p-1.5 text-[#5D5055] hover:text-[#2A2426] hover:bg-[#EFE7E0] rounded-lg cursor-pointer"
+                aria-label="Sluiten"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            <div className="p-6 overflow-y-auto space-y-5 text-left text-xs sm:text-sm text-[#44383C] leading-relaxed">
+              <div className="bg-white p-5 rounded-xl border border-[#EDE2D8] whitespace-pre-line">
+                {disclaimer.content}
+              </div>
+
+              {warranty && (
+                <div className="bg-white p-5 rounded-xl border border-[#EDE2D8] space-y-2">
+                  <h4 className="font-serif font-bold text-sm text-[#2A2426]">
+                    Garantie (Kort samengevat):
+                  </h4>
+                  <p className="text-xs text-[#52464A]">
+                    {warranty.threeMonthsText}
+                  </p>
+                  <p className="text-xs text-[#7A6E72] pt-1">
+                    {warranty.designChangeText}
+                  </p>
+                </div>
+              )}
+            </div>
+
+            <div className="p-4 bg-white border-t border-[#E8DFD8] flex items-center justify-between">
+              <span className="text-[11px] text-[#786D71]">
+                {data.brandName} · Rotterdam
+              </span>
+              <button
+                type="button"
+                onClick={() => {
+                  setAcceptedTerms(true);
+                  setShowDisclaimerModal(false);
+                  if (error) setError('');
+                }}
+                className="px-4 py-2 text-xs font-semibold text-white bg-[#2A2426] hover:bg-black rounded-lg transition-colors cursor-pointer"
+              >
+                Ik begrijp het en ga akkoord
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

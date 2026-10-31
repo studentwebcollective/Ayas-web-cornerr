@@ -25,6 +25,7 @@ export interface SiteData {
   logoOffsetX: number; // optional offset
   logoOffsetY: number;
   brandName: string;
+  brandNameColor?: string; // Hex color for brand name next to logo
   subtitle: string;
   email: string;
 
@@ -69,6 +70,9 @@ export interface SiteData {
     content: string;
   };
 
+  librarySubtitle?: string;
+  librarySubtitleSize?: 'small' | 'medium' | 'large' | 'xlarge' | string;
+
   websites: PortfolioWebsite[];
   inquiries: FormInquiry[];
 }
@@ -79,8 +83,11 @@ export const defaultSiteData: SiteData = {
   logoOffsetX: 0,
   logoOffsetY: 0,
   brandName: "Aya's Web Corner",
+  brandNameColor: '#2A2426',
   subtitle: "Based in Rotterdam · Est. 06 2026",
-  email: "aya.webcorner@gmail.com",
+  email: "ayaswebcorner@gmail.com",
+  librarySubtitle: "Hier zie je voorbeelden van websites. Klik op een website om deze direct live te bekijken!",
+  librarySubtitleSize: "small",
 
   home: {
     heroBigTitle: "Welkom bij Aya’s Web Corner",
@@ -122,52 +129,8 @@ export const defaultSiteData: SiteData = {
     content: "1. Aansprakelijkheid & Aangeleverd Materiaal: De opdrachtgever (klant) is te allen tijde zelf verantwoordelijk voor alle aangeleverde teksten, foto's, prijzen en logo's, en garandeert dat deze geen inbreuk maken op auteursrechten van derden. Aya's Web Corner is nimmer aansprakelijk voor claims betreffende door de klant aangeleverde content. De totale aansprakelijkheid van Aya's Web Corner is te allen tijde beperkt tot maximaal het factuurbedrag van de website (€79).\n\n2. Garantievoorwaarden: De gratis 3 maanden garantie geldt uitsluitend voor de originele, door mij opgeleverde code. Zodra de klant of een derde partij zelf wijzigingen aanbrengt in de broncode vervalt de gratis garantie. Designwijzigingen vallen zoals vermeld buiten de gratis garantie.\n\n3. Hosting & Domein: Webhosting en de domeinnaam worden op naam en voor rekening van de klant zelf afgesloten. Aya's Web Corner is geen hostingprovider en niet aansprakelijk voor eventuele downtime of storingen bij externe hostingpartijen.\n\n4. Studentenstatus: Werkzaamheden worden verricht als student in Rotterdam conform de geldende Nederlandse fiscale regelgeving (o.a. KOR / vrijgesteld van BTW)."
   },
 
-  websites: [
-    {
-      id: 'ayas-web-corner',
-      title: "Aya's Web Corner",
-      category: 'Webdevelopment & Design',
-      image: '/src/assets/images/portfolio_ayas_web_corner.svg',
-      description: 'Mijn eigen one-page website in Rotterdam, compleet met dienstenoverzicht, interactief beheerpaneel en online aanvraagformulier.',
-      link: '/'
-    },
-    {
-      id: 'rose-and-bloom',
-      title: 'Rose & Bloom Nail Studio',
-      category: 'Beauty & Nails',
-      image: '/src/assets/images/portfolio_beauty_salon_1792147197522.jpg',
-      description: 'One-page landingspagina voor een nagelstudio in Rotterdam met prijslijst, BIAB behandelingen en directe afspraaklink.',
-      link: 'https://instagram.com'
-    },
-    {
-      id: 'the-daily-knead',
-      title: 'Atelier De Bakker',
-      category: 'Bakkerij & Food',
-      image: '/src/assets/images/portfolio_bakery_pastry_1792147197116.jpg',
-      description: 'Overzichtelijke productpagina voor een desembakkerij met dagvers broodassortiment, weekendboxen en afhaaltijden.',
-      link: 'https://instagram.com'
-    },
-    {
-      id: 'atelier-noord',
-      title: 'Atelier Noord Vintage',
-      category: 'Mode & Vintage',
-      image: '/src/assets/images/portfolio_vintage_boutique_1792147197945.jpg',
-      description: 'Minimalistische online etalage voor een vintage kledingwinkel in Rotterdam met wekelijkse drops en route.',
-      link: 'https://instagram.com'
-    }
-  ],
+  // Empty by default - only genuine websites added via the admin panel will be shown
+  websites: [],
 
-  inquiries: [
-    {
-      id: 'inq-sample-1',
-      createdAt: '18 okt 2026, 11:20',
-      name: 'Soraya Bakir',
-      email: 'soraya@example.nl',
-      phone: '06 12345678',
-      businessName: 'Soraya Brows & Lashes',
-      category: 'Beauty & Nails',
-      message: 'Hoi Aya! Ik wil graag een simpele one-pager voor mijn wimper- en wenkbrauwstudio in Rotterdam. Ik heb al een prijslijstje klaar!',
-      status: 'nieuw'
-    }
-  ]
+  inquiries: []
 };

@@ -18,7 +18,8 @@ import {
   Globe,
   Copy,
   Download,
-  Upload
+  Upload,
+  Type
 } from 'lucide-react';
 import { PortfolioWebsite } from '../data/siteContent';
 
@@ -440,6 +441,89 @@ export const SimpleAdminModal: React.FC<SimpleAdminModalProps> = ({
                   />
                 </div>
 
+                {/* Tekstkleur van de naam naast het logo */}
+                <div className="sm:col-span-2 p-4 bg-white border border-[#DDD0C6] rounded-xl space-y-3">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div>
+                      <label className="block text-xs font-semibold text-[#2A2426]">
+                        Tekstkleur van "{data.brandName}" (naast het logo)
+                      </label>
+                      <p className="text-[11px] text-[#7A6E72] mt-0.5">
+                        Kies een kleur of typ een eigen hex-code in voor de merknaam in de menubalk.
+                      </p>
+                    </div>
+
+                    {/* Live Preview Box */}
+                    <div className="flex items-center gap-2 px-3 py-1.5 bg-[#FAF7F2] rounded-lg border border-[#E8DFD8] shrink-0">
+                      <span className="text-[10px] text-[#786D71]">Voorbeeld:</span>
+                      <span
+                        className="font-serif text-base font-bold transition-colors"
+                        style={{ color: data.brandNameColor || '#2A2426' }}
+                      >
+                        {data.brandName}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-3">
+                    {/* Native color picker */}
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="color"
+                        value={data.brandNameColor || '#2A2426'}
+                        onChange={(e) => updateData({ brandNameColor: e.target.value })}
+                        className="w-9 h-9 p-0.5 border border-[#DDD0C6] rounded-lg cursor-pointer bg-white"
+                        title="Kies een kleur via de kleurenkiezer"
+                      />
+                      <input
+                        type="text"
+                        value={data.brandNameColor || '#2A2426'}
+                        onChange={(e) => updateData({ brandNameColor: e.target.value })}
+                        placeholder="#2A2426"
+                        className="w-24 px-2.5 py-1.5 text-xs font-mono bg-[#FAF8F5] border border-[#DDD0C6] rounded-lg uppercase"
+                      />
+                    </div>
+
+                    <div className="h-6 w-[1px] bg-[#E8DFD8] hidden sm:block" />
+
+                    {/* Quick color preset swatches */}
+                    <div className="flex items-center flex-wrap gap-1.5">
+                      <span className="text-[11px] text-[#786D71] mr-1">Kleuren:</span>
+                      {[
+                        { label: 'Espresso', color: '#2A2426' },
+                        { label: 'Zacht Roze', color: '#E28FA1' },
+                        { label: 'Rozerood', color: '#B85970' },
+                        { label: 'Bordeaux', color: '#8E4A5C' },
+                        { label: 'Oudroze', color: '#C27B8A' },
+                        { label: 'Warm Bruin', color: '#4A3E3D' },
+                        { label: 'Diep Zwart', color: '#111111' },
+                        { label: 'Goud/Olijf', color: '#6F5B4E' }
+                      ].map((swatch) => (
+                        <button
+                          key={swatch.color}
+                          type="button"
+                          onClick={() => updateData({ brandNameColor: swatch.color })}
+                          className={`w-6 h-6 rounded-md border flex items-center justify-center transition-transform hover:scale-110 cursor-pointer ${
+                            (data.brandNameColor || '#2A2426').toLowerCase() === swatch.color.toLowerCase()
+                              ? 'ring-2 ring-black scale-105'
+                              : 'border-black/20'
+                          }`}
+                          style={{ backgroundColor: swatch.color }}
+                          title={`${swatch.label} (${swatch.color})`}
+                        />
+                      ))}
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => updateData({ brandNameColor: '#2A2426' })}
+                      className="text-[11px] text-[#786D71] hover:underline cursor-pointer ml-auto"
+                    >
+                      Standaard (#2A2426)
+                    </button>
+                  </div>
+                </div>
+
                 <div className="sm:col-span-2">
                   <label className="block text-xs font-medium text-[#463D40] mb-1">
                     Jouw E-mailadres (waar klanten contact mee hebben)
@@ -703,14 +787,97 @@ export const SimpleAdminModal: React.FC<SimpleAdminModalProps> = ({
 
           {/* TAB: PORTFOLIO / WEBSITE BIBLIOTHEEK */}
           {activeTab === 'portfolio' && (
-            <div className="space-y-8">
+            <div className="space-y-6">
               <div>
                 <h3 className="font-serif text-lg text-[#2A2426]">
                   Website Bibliotheek Beheer
                 </h3>
                 <p className="text-xs text-[#786D71] mt-0.5">
-                  Voeg hier een gemaakte website toe of haal er eentje weg.
+                  Pas de introtekst en tekstgrootte aan, en beheer de gemaakte websites.
                 </p>
+              </div>
+
+              {/* Aanpassen van de tekst onder 'Website Bibliotheek' en de tekstgrootte */}
+              <div className="p-5 border border-[#E8DDD2] bg-[#FAF8F5] rounded-xl space-y-4">
+                <div className="flex items-center gap-1.5 text-xs font-semibold text-[#2A2426]">
+                  <Type size={15} />
+                  <span>Tekst onder "Website Bibliotheek" & Tekstgrootte</span>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-medium text-[#463D40] mb-1">
+                    Subtitel tekst (direct onder de titel op de pagina)
+                  </label>
+                  <textarea
+                    rows={2}
+                    value={data.librarySubtitle ?? "Hier zie je voorbeelden van websites. Klik op een website om deze direct live te bekijken!"}
+                    onChange={(e) => updateData({ librarySubtitle: e.target.value })}
+                    placeholder="Hier zie je voorbeelden van websites. Klik op een website om deze direct live te bekijken!"
+                    className="w-full px-3 py-2 text-xs bg-white border border-[#DDD0C6] rounded-lg text-[#2A2426] focus:outline-none focus:border-[#2A2426]"
+                  />
+                </div>
+
+                {/* Tekstgrootte selector */}
+                <div>
+                  <label className="block text-xs font-medium text-[#463D40] mb-1.5">
+                    Tekstgrootte van dit stukje tekst
+                  </label>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                    {[
+                      { id: 'small', label: 'Klein', detail: '12px' },
+                      { id: 'medium', label: 'Normaal', detail: '14px' },
+                      { id: 'large', label: 'Groot', detail: '16px' },
+                      { id: 'xlarge', label: 'Extra groot', detail: '18px' }
+                    ].map((option) => {
+                      const isSelected = (data.librarySubtitleSize || 'small') === option.id;
+                      return (
+                        <button
+                          key={option.id}
+                          type="button"
+                          onClick={() => updateData({ librarySubtitleSize: option.id })}
+                          className={`p-2.5 rounded-lg border text-left cursor-pointer transition-all ${
+                            isSelected
+                              ? 'border-[#2A2426] bg-[#2A2426] text-white shadow-2xs'
+                              : 'border-[#DDD0C6] bg-white text-[#463D40] hover:border-[#887C80]'
+                          }`}
+                        >
+                          <div className="font-semibold text-xs flex items-center justify-between">
+                            <span>{option.label}</span>
+                            {isSelected && <Check size={12} />}
+                          </div>
+                          <div className={`text-[10px] mt-0.5 ${isSelected ? 'text-white/80' : 'text-[#887C80]'}`}>
+                            {option.detail}
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Live Preview Box */}
+                <div className="p-3 bg-white border border-[#E8DDD2] rounded-lg space-y-1">
+                  <span className="text-[10px] uppercase font-bold tracking-wider text-[#8A7D82] block">
+                    Live Voorbeeld op de website:
+                  </span>
+                  <div className="pt-1">
+                    <span className="font-serif text-xl font-bold text-[#2A2426] block">
+                      Website Bibliotheek
+                    </span>
+                    <p
+                      className={`text-[#7A6E72] mt-0.5 leading-relaxed ${
+                        data.librarySubtitleSize === 'medium'
+                          ? 'text-sm'
+                          : data.librarySubtitleSize === 'large'
+                          ? 'text-base'
+                          : data.librarySubtitleSize === 'xlarge'
+                          ? 'text-lg'
+                          : 'text-xs'
+                      }`}
+                    >
+                      {data.librarySubtitle || "Hier zie je voorbeelden van websites. Klik op een website om deze direct live te bekijken!"}
+                    </p>
+                  </div>
+                </div>
               </div>
 
               {/* Form to add website */}
@@ -833,9 +1000,16 @@ export const SimpleAdminModal: React.FC<SimpleAdminModalProps> = ({
               {/* Existing websites list */}
               <div className="space-y-2">
                 <div className="font-semibold text-xs text-[#2A2426]">
-                  Huidige websites in bibliotheek ({data.websites.length}):
+                  Huidige websites in bibliotheek ({data.websites?.length || 0}):
                 </div>
-                {data.websites.map((w) => (
+
+                {(!data.websites || data.websites.length === 0) && (
+                  <div className="p-4 text-center border border-dashed border-[#DDD0C6] rounded-xl text-xs text-[#8A7D82] bg-[#FAF8F5]">
+                    Nog geen websites toegevoegd. Voeg je eerste website toe met het formulier hierboven!
+                  </div>
+                )}
+
+                {(data.websites || []).map((w) => (
                   <div
                     key={w.id}
                     className="p-3 border border-[#E8DDD2] bg-white rounded-xl flex items-center justify-between gap-3"

@@ -20,7 +20,28 @@ interface SiteContentContextType {
   isCloudSynced: boolean;
 }
 
-const STORAGE_KEY = 'ayas_clean_site_v4';
+const STORAGE_KEY = 'ayas_clean_site_v5';
+
+const DEMO_WEBSITE_IDS = new Set([
+  'ayas-web-corner',
+  'rose-and-bloom',
+  'the-daily-knead',
+  'atelier-noord'
+]);
+
+function filterOutDemoData(siteData: SiteData): SiteData {
+  const cleanWebsites = (siteData.websites || []).filter(
+    (w) => !DEMO_WEBSITE_IDS.has(w.id)
+  );
+  const cleanInquiries = (siteData.inquiries || []).filter(
+    (i) => i.id !== 'inq-sample-1'
+  );
+  return {
+    ...siteData,
+    websites: cleanWebsites,
+    inquiries: cleanInquiries
+  };
+}
 
 const SiteContentContext = createContext<SiteContentContextType | undefined>(undefined);
 
@@ -49,10 +70,11 @@ function mergeDeep(target: any, source: any): any {
 export const SiteContentProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [data, setData] = useState<SiteData>(() => {
     try {
-      const saved = localStorage.getItem(STORAGE_KEY);
+      const saved = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('ayas_clean_site_v4');
       if (saved) {
         const parsed = JSON.parse(saved);
-        return mergeDeep(defaultSiteData, parsed);
+        const merged = mergeDeep(defaultSiteData, parsed);
+        return filterOutDemoData(merged);
       }
     } catch (e) {
       console.warn('Could not load stored data', e);
@@ -91,12 +113,13 @@ export const SiteContentProvider: React.FC<{ children: React.ReactNode }> = ({ c
           const remoteData = snapshot.data();
           setData((prev) => {
             const merged = mergeDeep(prev, remoteData);
+            const cleaned = filterOutDemoData(merged);
             try {
-              localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
+              localStorage.setItem(STORAGE_KEY, JSON.stringify(cleaned));
             } catch (e) {
               console.warn(e);
             }
-            return merged;
+            return cleaned;
           });
           setIsCloudSynced(true);
         } else if (isFirstLoadRef.current) {

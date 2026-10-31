@@ -20,8 +20,7 @@ export const SiteNav: React.FC<SiteNavProps> = ({
     { id: 'garantie', label: 'Garantie' },
     { id: 'bibliotheek', label: 'Website Bibliotheek' },
     { id: 'hoe-bestellen', label: 'Hoe Bestellen Werkt' },
-    { id: 'contact', label: 'Aanvraag & Vragenlijst' },
-    { id: 'disclaimer', label: 'Disclaimer' }
+    { id: 'contact', label: 'Aanvraag & Vragenlijst' }
   ];
 
   const handleSelectPage = (pageId: string) => {
@@ -60,7 +59,10 @@ export const SiteNav: React.FC<SiteNavProps> = ({
             )}
 
             <div>
-              <span className="font-serif text-xl sm:text-2xl font-bold tracking-tight text-[#2A2426] block leading-none group-hover:text-black transition-colors">
+              <span
+                className="font-serif text-xl sm:text-2xl font-bold tracking-tight block leading-none transition-colors"
+                style={{ color: data.brandNameColor || '#2A2426' }}
+              >
                 {data.brandName}
               </span>
               <span className="text-[11px] text-[#786D71] mt-1 block">
