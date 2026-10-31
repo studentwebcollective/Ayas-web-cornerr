@@ -126,10 +126,10 @@ export const SimpleAdminModal: React.FC<SimpleAdminModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-5 bg-black/60 backdrop-blur-xs">
-      <div className="w-full max-w-4xl max-h-[92vh] bg-[#FCEEF2] rounded-2xl shadow-xl flex flex-col border border-[#F0DDE3] overflow-hidden">
+      <div className="w-full max-w-4xl max-h-[92vh] bg-[#FAF7F2] rounded-2xl shadow-xl flex flex-col border border-[#E4D9D0] overflow-hidden">
         
         {/* Modal Header */}
-        <div className="px-6 py-4 bg-white border-b border-[#F0DDE3] flex items-center justify-between shrink-0">
+        <div className="px-6 py-4 bg-white border-b border-[#E8DFD8] flex items-center justify-between shrink-0">
           <div>
             <h2 className="font-serif text-xl font-bold text-[#2A2426]">
               Beheerpaneel
@@ -141,7 +141,7 @@ export const SimpleAdminModal: React.FC<SimpleAdminModalProps> = ({
 
           <div className="flex items-center gap-2.5">
             {isCloudSynced && (
-              <span className="text-[11px] text-[#2A2426] flex items-center gap-1 font-medium bg-[#F8E2EA] px-2.5 py-1 rounded-md border border-[#F0DDE3]" title="Alle wijzigingen worden live opgeslagen in de Google Cloud database">
+              <span className="text-[11px] text-[#2A2426] flex items-center gap-1 font-medium bg-[#F2EDE8] px-2.5 py-1 rounded-md border border-[#E0D5CC]" title="Alle wijzigingen worden live opgeslagen in de Google Cloud database">
                 <span>☁️</span>
                 <span>Automatisch gesynchroniseerd</span>
               </span>
@@ -154,7 +154,7 @@ export const SimpleAdminModal: React.FC<SimpleAdminModalProps> = ({
             )}
             <button
               onClick={onClose}
-              className="p-1.5 text-[#5D5055] hover:text-[#2A2426] hover:bg-[#F8E2EA] rounded-lg cursor-pointer"
+              className="p-1.5 text-[#5D5055] hover:text-[#2A2426] hover:bg-[#EFE7E0] rounded-lg cursor-pointer"
             >
               <X size={20} />
             </button>
@@ -162,7 +162,7 @@ export const SimpleAdminModal: React.FC<SimpleAdminModalProps> = ({
         </div>
 
         {/* Tab Buttons */}
-        <div className="px-6 py-2 bg-[#F9E9EF] border-b border-[#F0DDE3] flex items-center gap-2 overflow-x-auto shrink-0">
+        <div className="px-6 py-2 bg-[#F5EFE9] border-b border-[#E8DFD8] flex items-center gap-2 overflow-x-auto shrink-0">
           {navTabs.map((t) => (
             <button
               key={t.id}
@@ -985,7 +985,7 @@ export const SimpleAdminModal: React.FC<SimpleAdminModalProps> = ({
               {/* CARD 2: IMPORTEER INHOUD */}
               <div className="p-5 border border-[#DDD0C6] rounded-2xl bg-white space-y-4">
                 <div className="flex items-start gap-3">
-                  <div className="p-2.5 bg-[#FCEEF2] text-[#2A2426] border border-[#F0DDE3] rounded-xl">
+                  <div className="p-2.5 bg-[#FAF7F2] text-[#2A2426] border border-[#E8DFD8] rounded-xl">
                     <Upload size={20} />
                   </div>
                   <div className="flex-1">
@@ -1003,7 +1003,7 @@ export const SimpleAdminModal: React.FC<SimpleAdminModalProps> = ({
                   value={importJsonText}
                   onChange={(e) => setImportJsonText(e.target.value)}
                   placeholder="Plak hier de inhoudscode (JSON)..."
-                  className="w-full px-3 py-2 text-xs bg-[#FFF9FB] border border-[#E2CBD3] rounded-lg font-mono"
+                  className="w-full px-3 py-2 text-xs bg-[#FAF8F5] border border-[#DDD0C6] rounded-lg font-mono"
                 />
 
                 <div className="flex items-center gap-3">
@@ -1040,7 +1040,7 @@ export const SimpleAdminModal: React.FC<SimpleAdminModalProps> = ({
         </div>
 
         {/* Modal Footer */}
-        <div className="px-6 py-3.5 bg-[#FCEEF2] border-t border-[#F0DDE3] flex items-center justify-end shrink-0">
+        <div className="px-6 py-3.5 bg-[#FAF7F2] border-t border-[#E8DFD8] flex items-center justify-end shrink-0">
           <button
             type="button"
             onClick={onClose}

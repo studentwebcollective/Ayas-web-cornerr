@@ -7,8 +7,8 @@
   --color-brand-pink-soft: #FBF0F3;
   --color-brand-pink-hover: #D78195;
   --color-brand-pink-deep: #B85970;
-  --color-brand-cream: #FCEEF2;
-  --color-brand-cream-subtle: #F7DFE7;
+  --color-brand-cream: #FAF7F2;
+  --color-brand-cream-subtle: #F5EFE8;
   --color-brand-dark: #2A2426;
   --color-brand-muted: #6E6466;
 }
@@ -28,12 +28,12 @@ html {
   height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #FCEEF2;
+  background: #FAF7F2;
 }
 ::-webkit-scrollbar-thumb {
-  background: #E8CED8;
+  background: #E4D9D0;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #D5B4BF;
+  background: #D2C4B8;
 }

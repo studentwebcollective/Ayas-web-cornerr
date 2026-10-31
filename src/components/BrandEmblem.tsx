@@ -20,7 +20,7 @@ export const BrandEmblem: React.FC<BrandEmblemProps> = ({
 
   return (
     <div
-      className={`relative rounded-3xl bg-[#FCEEF2] p-6 flex flex-col items-center justify-center text-center select-none shadow-[0_4px_24px_rgba(232,156,174,0.12)] border border-[#F0DDE3] ${sizeMap[size]} ${className}`}
+      className={`relative rounded-3xl bg-[#FAF7F2] p-6 flex flex-col items-center justify-center text-center select-none shadow-[0_4px_24px_rgba(232,156,174,0.12)] border border-[#F0E4DE] ${sizeMap[size]} ${className}`}
       aria-label="Aya's Web Corner - Rotterdam Logo"
     >
       {/* Subtle organic circle accent */}

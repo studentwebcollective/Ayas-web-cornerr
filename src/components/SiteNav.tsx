@@ -34,7 +34,7 @@ export const SiteNav: React.FC<SiteNavProps> = ({
 
   return (
     <>
-      <header className="border-b border-[#F0DDE3] bg-[#FCEEF2] sticky top-0 z-40">
+      <header className="border-b border-[#E8DFD8] bg-[#FAF7F2] sticky top-0 z-40">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
           
           {/* Left: Logo without any white border or white box background + Brand Name */}
@@ -54,7 +54,7 @@ export const SiteNav: React.FC<SiteNavProps> = ({
                 />
               </div>
             ) : (
-              <div className="h-11 w-11 rounded-xl bg-[#F5E1E8] flex items-center justify-center text-[#2A2426] font-serif font-bold text-lg shrink-0">
+              <div className="h-11 w-11 rounded-xl bg-[#F0E6DE] flex items-center justify-center text-[#2A2426] font-serif font-bold text-lg shrink-0">
                 A
               </div>
             )}
@@ -72,7 +72,7 @@ export const SiteNav: React.FC<SiteNavProps> = ({
           {/* Right corner: 3 Stripes Menu Icon */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="p-2.5 text-[#2A2426] hover:bg-[#F8E2EA] rounded-xl transition-colors cursor-pointer"
+            className="p-2.5 text-[#2A2426] hover:bg-[#EFE7E0] rounded-xl transition-colors cursor-pointer"
             aria-label="Menu"
             aria-expanded={menuOpen}
             title="Menu"
@@ -94,16 +94,16 @@ export const SiteNav: React.FC<SiteNavProps> = ({
           />
 
           {/* Side drawer panel (approx 1/3 of screen, max ~450px, full width on small mobile) */}
-          <div className="relative z-10 w-full sm:w-[380px] md:w-1/3 min-w-[300px] max-w-[460px] h-full bg-[#FCEEF2] border-l border-[#F0DDE3] shadow-2xl flex flex-col justify-between p-6 sm:p-8 overflow-y-auto">
+          <div className="relative z-10 w-full sm:w-[380px] md:w-1/3 min-w-[300px] max-w-[460px] h-full bg-[#FAF7F2] border-l border-[#E8DFD8] shadow-2xl flex flex-col justify-between p-6 sm:p-8 overflow-y-auto">
             <div>
               {/* Top Bar inside Menu Drawer */}
-              <div className="flex items-center justify-between border-b border-[#F0DDE3] pb-5">
+              <div className="flex items-center justify-between border-b border-[#E8DFD8] pb-5">
                 <span className="font-serif text-2xl font-bold text-[#2A2426]">
                   Menu
                 </span>
                 <button
                   onClick={() => setMenuOpen(false)}
-                  className="p-2 text-[#2A2426] hover:bg-[#F8E2EA] rounded-xl transition-colors cursor-pointer"
+                  className="p-2 text-[#2A2426] hover:bg-[#EFE7E0] rounded-xl transition-colors cursor-pointer"
                   aria-label="Sluiten"
                 >
                   <X size={26} />
@@ -133,7 +133,7 @@ export const SiteNav: React.FC<SiteNavProps> = ({
             </div>
 
             {/* Bottom section of menu */}
-            <div className="w-full pt-6 border-t border-[#F0DDE3] text-xs text-[#7A6F73] text-left">
+            <div className="w-full pt-6 border-t border-[#E8DFD8] text-xs text-[#7A6F73] text-left">
               <span>{data.brandName}</span>
               <span className="mx-2">·</span>
               <span>{data.subtitle}</span>

@@ -43,7 +43,7 @@ function MainApp() {
 
   // Dynamically update browser favicon & apple-touch-icon to match the logo from admin panel
   useEffect(() => {
-    const defaultFavicon = "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%232A2426'/><text x='16' y='22' font-size='18' font-family='serif' font-weight='bold' fill='%23FCEEF2' text-anchor='middle'>A</text></svg>";
+    const defaultFavicon = "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%232A2426'/><text x='16' y='22' font-size='18' font-family='serif' font-weight='bold' fill='%23FAF7F2' text-anchor='middle'>A</text></svg>";
     const targetIcon = data.logoImage && data.logoImage.trim() !== '' ? data.logoImage : defaultFavicon;
 
     // Update standard icon
@@ -66,7 +66,7 @@ function MainApp() {
   }, [data.logoImage]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FCEEF2] text-[#2A2426]">
+    <div className="min-h-screen flex flex-col bg-[#FAF7F2] text-[#2A2426]">
       {/* Clean Navigation with 3 Stripes in Top Right Corner */}
       <SiteNav
         currentPage={currentPage}
@@ -120,7 +120,7 @@ function MainApp() {
       </main>
 
       {/* Simple, quiet footer with inconspicuous, tiny admin link */}
-      <footer className="border-t border-[#F0DDE3] bg-[#FCEEF2] py-8 mt-16 text-xs text-[#786D71]">
+      <footer className="border-t border-[#E8DFD8] bg-[#FAF7F2] py-8 mt-16 text-xs text-[#786D71]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div>
             © {new Date().getFullYear()} {data.brandName} · {data.subtitle}
