@@ -30,6 +30,9 @@ export const SiteNav: React.FC<SiteNavProps> = ({
   };
 
   const scale = (data.logoScale || 100) / 100;
+  const offsetX = data.logoOffsetX || 0;
+  const offsetY = data.logoOffsetY || 0;
+  const logoBoxSize = data.logoNavbarSize || 54;
 
   return (
     <>
@@ -42,13 +45,16 @@ export const SiteNav: React.FC<SiteNavProps> = ({
             className="flex items-center gap-3 cursor-pointer select-none group"
           >
             {data.logoImage ? (
-              <div className="w-13 h-13 overflow-hidden rounded-xl flex items-center justify-center bg-transparent shrink-0">
+              <div
+                className="overflow-hidden rounded-xl flex items-center justify-center bg-transparent shrink-0"
+                style={{ width: `${logoBoxSize}px`, height: `${logoBoxSize}px` }}
+              >
                 <img
                   src={data.logoImage}
                   alt={data.brandName}
-                  className="w-full h-full object-contain transition-transform duration-200"
+                  className="w-full h-full object-contain transition-transform duration-100"
                   style={{
-                    transform: `scale(${scale})`
+                    transform: `translate(${offsetX}px, ${offsetY}px) scale(${scale})`
                   }}
                 />
               </div>

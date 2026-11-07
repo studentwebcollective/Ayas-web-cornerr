@@ -19,7 +19,14 @@ import {
   Copy,
   Download,
   Upload,
-  Type
+  Type,
+  Move,
+  ArrowUp,
+  ArrowDown,
+  ArrowLeft,
+  ArrowRight,
+  RotateCcw,
+  Maximize2
 } from 'lucide-react';
 import { PortfolioWebsite } from '../data/siteContent';
 
@@ -123,7 +130,63 @@ export const SimpleAdminModal: React.FC<SimpleAdminModalProps> = ({
     { id: 'sync', label: '💾 Sync & Opslaan in Code' }
   ];
 
-  const currentScale = data.logoScale || 100;
+  const [localScale, setLocalScale] = useState(data.logoScale || 100);
+  const [localOffsetX, setLocalOffsetX] = useState(data.logoOffsetX || 0);
+  const [localOffsetY, setLocalOffsetY] = useState(data.logoOffsetY || 0);
+  const [localNavbarSize, setLocalNavbarSize] = useState(data.logoNavbarSize || 54);
+
+  React.useEffect(() => {
+    setLocalScale(data.logoScale || 100);
+  }, [data.logoScale]);
+
+  React.useEffect(() => {
+    setLocalOffsetX(data.logoOffsetX || 0);
+  }, [data.logoOffsetX]);
+
+  React.useEffect(() => {
+    setLocalOffsetY(data.logoOffsetY || 0);
+  }, [data.logoOffsetY]);
+
+  React.useEffect(() => {
+    setLocalNavbarSize(data.logoNavbarSize || 54);
+  }, [data.logoNavbarSize]);
+
+  const handleScaleChange = (val: number) => {
+    const clamped = Math.max(50, Math.min(800, val));
+    setLocalScale(clamped);
+    updateData({ logoScale: clamped });
+  };
+
+  const handleOffsetXChange = (val: number) => {
+    const clamped = Math.max(-150, Math.min(150, val));
+    setLocalOffsetX(clamped);
+    updateData({ logoOffsetX: clamped });
+  };
+
+  const handleOffsetYChange = (val: number) => {
+    const clamped = Math.max(-150, Math.min(150, val));
+    setLocalOffsetY(clamped);
+    updateData({ logoOffsetY: clamped });
+  };
+
+  const handleNavbarSizeChange = (val: number) => {
+    const clamped = Math.max(36, Math.min(96, val));
+    setLocalNavbarSize(clamped);
+    updateData({ logoNavbarSize: clamped });
+  };
+
+  const handleResetLogoTransform = () => {
+    setLocalScale(100);
+    setLocalOffsetX(0);
+    setLocalOffsetY(0);
+    setLocalNavbarSize(54);
+    updateData({
+      logoScale: 100,
+      logoOffsetX: 0,
+      logoOffsetY: 0,
+      logoNavbarSize: 54
+    });
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-5 bg-black/60 backdrop-blur-xs">
@@ -319,101 +382,323 @@ export const SimpleAdminModal: React.FC<SimpleAdminModalProps> = ({
                   Logo Foto & Inzoomen
                 </h3>
                 <p className="text-xs text-[#786D71] mt-0.5">
-                  Upload je logo en gebruik de schuifbalk om in of uit te zoomen. Jouw logo wordt tevens automatisch ingesteld als browser-tabblad favicon!
+                  Upload je logo en zoom naar wens in (tot 800%). Je kunt het logo ook eenvoudig verschuiven zodat jouw afbeelding of icoon precies in het midden staat. Jouw logo wordt tevens automatisch ingesteld als browser-tabblad favicon!
                 </p>
               </div>
 
-              {/* Logo Preview with live zoom */}
-              <div className="p-6 border border-[#E8DDD2] bg-[#FAF8F5] rounded-xl flex flex-col sm:flex-row items-center gap-6">
-                
-                {/* Live simulation box */}
-                <div className="text-center space-y-1 shrink-0">
-                  <div className="w-24 h-24 rounded-2xl overflow-hidden flex items-center justify-center bg-transparent border border-[#DDD0C6]">
+              {/* Upload button & file picker */}
+              <div className="flex flex-wrap items-center gap-3">
+                <input
+                  type="file"
+                  ref={logoInputRef}
+                  onChange={handleLogoUpload}
+                  accept="image/*"
+                  className="hidden"
+                />
+                <button
+                  type="button"
+                  onClick={() => logoInputRef.current?.click()}
+                  className="px-4 py-2.5 text-xs font-semibold text-white bg-[#2A2426] hover:bg-black rounded-xl transition-colors cursor-pointer flex items-center gap-2 shadow-xs"
+                >
+                  <Camera size={15} />
+                  <span>{data.logoImage ? 'Andere foto kiezen' : 'Kies foto van computer of telefoon'}</span>
+                </button>
+
+                {data.logoImage && (
+                  <button
+                    type="button"
+                    onClick={handleResetLogoTransform}
+                    className="px-3 py-2 text-xs text-[#554A4E] hover:text-[#2A2426] hover:bg-[#EFE8E2] rounded-lg transition-colors cursor-pointer flex items-center gap-1.5 border border-[#DDD0C6]"
+                    title="Herstel naar 100% zoom en het midden"
+                  >
+                    <RotateCcw size={13} />
+                    <span>Herstel zoom & positie</span>
+                  </button>
+                )}
+
+                {data.logoImage && (
+                  <button
+                    type="button"
+                    onClick={() => updateLogo('')}
+                    className="px-3 py-2 text-xs text-red-600 hover:text-red-800 hover:bg-red-50 rounded-lg transition-colors cursor-pointer flex items-center gap-1 ml-auto"
+                  >
+                    <Trash2 size={13} />
+                    <span>Verwijder foto</span>
+                  </button>
+                )}
+              </div>
+
+              {/* Live Preview Box */}
+              <div className="p-5 border border-[#E8DDD2] bg-[#FAF8F5] rounded-2xl space-y-3">
+                <div className="flex items-center justify-between text-xs text-[#7A6E72]">
+                  <span className="font-semibold text-[#2A2426] flex items-center gap-1.5">
+                    <span>👁️</span>
+                    <span>Live Voorbeeld Menubalk & Favicon</span>
+                  </span>
+                  {data.logoImage && (
+                    <span className="bg-[#EFE7E0] text-[#4E4347] font-medium px-2 py-0.5 rounded-md text-[11px]">
+                      Zoom: <strong>{localScale}%</strong> · Positie: X {localOffsetX}px, Y {localOffsetY}px
+                    </span>
+                  )}
+                </div>
+
+                <div className="p-4 bg-[#FAF7F2] border border-[#E4D9D0] rounded-xl flex items-center gap-4">
+                  {/* The exact logo frame as on the live website */}
+                  <div
+                    className="overflow-hidden rounded-xl flex items-center justify-center bg-transparent shrink-0 border border-[#DDD0C6]/70 shadow-2xs"
+                    style={{ width: `${localNavbarSize}px`, height: `${localNavbarSize}px` }}
+                  >
                     {data.logoImage ? (
                       <img
                         src={data.logoImage}
                         alt="Logo preview"
-                        className="w-full h-full object-contain"
+                        className="w-full h-full object-contain pointer-events-none transition-transform duration-75"
                         style={{
-                          transform: `scale(${currentScale / 100})`
+                          transform: `translate(${localOffsetX}px, ${localOffsetY}px) scale(${localScale / 100})`
                         }}
                       />
                     ) : (
-                      <span className="text-[10px] text-[#867B80] p-2">Nog geen foto</span>
+                      <span className="text-[10px] text-[#867B80] p-1 text-center leading-tight">Geen foto</span>
                     )}
                   </div>
-                  <span className="text-[10px] text-[#786D71] block">
-                    Menubalk & Favicon
-                  </span>
-                </div>
 
-                <div className="space-y-4 flex-1 w-full">
-                  {/* File picker */}
-                  <div className="space-y-2">
-                    <input
-                      type="file"
-                      ref={logoInputRef}
-                      onChange={handleLogoUpload}
-                      accept="image/*"
-                      className="hidden"
-                    />
-                    <button
-                      onClick={() => logoInputRef.current?.click()}
-                      className="px-4 py-2 text-xs font-semibold text-white bg-[#2A2426] hover:bg-black rounded-lg transition-colors cursor-pointer flex items-center gap-1.5"
+                  {/* Brand name representation next to logo */}
+                  <div>
+                    <span
+                      className="font-serif text-lg sm:text-xl font-bold tracking-tight block leading-none transition-colors"
+                      style={{ color: data.brandNameColor || '#2A2426' }}
                     >
-                      <Camera size={14} />
-                      <span>Kies foto van je computer of telefoon</span>
-                    </button>
+                      {data.brandName}
+                    </span>
+                    <span className="text-[10px] sm:text-[11px] text-[#786D71] mt-1 block">
+                      {data.subtitle}
+                    </span>
                   </div>
+                </div>
+              </div>
 
-                  {/* Zoom Slider */}
-                  {data.logoImage && (
-                    <div className="p-3 bg-white border border-[#E8DDD2] rounded-xl space-y-2">
-                      <div className="flex items-center justify-between text-xs font-medium text-[#463D40]">
-                        <span className="flex items-center gap-1">
-                          <ZoomIn size={14} />
-                          <span>Logo Inzoomen / Schaal</span>
-                        </span>
-                        <span className="font-bold text-[#2A2426]">
-                          {currentScale}%
-                        </span>
+              {/* Controls (Only if logo is uploaded) */}
+              {data.logoImage ? (
+                <div className="space-y-5">
+                  {/* 1. ZOOM CONTROLS */}
+                  <div className="p-4 bg-white border border-[#E8DDD2] rounded-2xl space-y-3.5 shadow-2xs">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-1.5 text-xs font-bold text-[#2A2426]">
+                        <ZoomIn size={16} />
+                        <span>Logo Inzoomen / Schaal</span>
                       </div>
-
-                      <div className="flex items-center gap-3">
-                        <ZoomOut size={14} className="text-[#887C80]" />
-                        <input
-                          type="range"
-                          min="60"
-                          max="250"
-                          step="5"
-                          value={currentScale}
-                          onChange={(e) => updateLogoScale(Number(e.target.value))}
-                          className="flex-1 accent-[#2A2426] cursor-pointer"
-                        />
-                        <ZoomIn size={14} className="text-[#887C80]" />
-                      </div>
-
-                      <div className="flex justify-end">
+                      <div className="flex items-center gap-2">
                         <button
-                          onClick={() => updateLogoScale(100)}
-                          className="text-[11px] text-[#786D71] hover:underline cursor-pointer"
+                          type="button"
+                          onClick={() => handleScaleChange(localScale - 25)}
+                          className="w-7 h-7 flex items-center justify-center rounded-md border border-[#DDD0C6] text-[#2A2426] hover:bg-[#F2EDE8] font-bold cursor-pointer text-sm"
+                          title="25% uitzoomen"
                         >
-                          Herstel naar 100%
+                          -
+                        </button>
+                        <span className="font-bold text-sm text-[#2A2426] min-w-[50px] text-center">
+                          {localScale}%
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => handleScaleChange(localScale + 25)}
+                          className="w-7 h-7 flex items-center justify-center rounded-md border border-[#DDD0C6] text-[#2A2426] hover:bg-[#F2EDE8] font-bold cursor-pointer text-sm"
+                          title="25% inzoomen"
+                        >
+                          +
                         </button>
                       </div>
                     </div>
-                  )}
 
-                  {data.logoImage && (
-                    <button
-                      onClick={() => updateLogo('')}
-                      className="text-xs text-red-600 block hover:underline cursor-pointer"
-                    >
-                      Verwijder deze foto
-                    </button>
-                  )}
+                    {/* Main continuous zoom slider (50% to 800%) */}
+                    <div className="flex items-center gap-3">
+                      <ZoomOut size={14} className="text-[#887C80] shrink-0" />
+                      <input
+                        type="range"
+                        min="50"
+                        max="800"
+                        step="5"
+                        value={localScale}
+                        onChange={(e) => handleScaleChange(Number(e.target.value))}
+                        className="flex-1 accent-[#2A2426] cursor-pointer h-2 bg-[#EFE7E0] rounded-lg"
+                      />
+                      <ZoomIn size={14} className="text-[#887C80] shrink-0" />
+                    </div>
+
+                    {/* Quick zoom presets */}
+                    <div className="space-y-1">
+                      <span className="text-[10px] text-[#7A6E72] font-medium block">
+                        Snelle zoom standen:
+                      </span>
+                      <div className="flex flex-wrap gap-1.5">
+                        {[100, 150, 200, 250, 300, 400, 500, 650, 800].map((preset) => (
+                          <button
+                            key={preset}
+                            type="button"
+                            onClick={() => handleScaleChange(preset)}
+                            className={`px-2.5 py-1 text-[11px] font-semibold rounded-md transition-colors cursor-pointer ${
+                              localScale === preset
+                                ? 'bg-[#2A2426] text-white shadow-xs'
+                                : 'bg-[#FAF7F2] text-[#554A4E] hover:bg-[#EFE8E2] border border-[#E0D5CC]'
+                            }`}
+                          >
+                            {preset}%
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 2. POSITION & PANNING CONTROLS */}
+                  <div className="p-4 bg-white border border-[#E8DDD2] rounded-2xl space-y-4 shadow-2xs">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-1.5 text-xs font-bold text-[#2A2426]">
+                        <Move size={15} />
+                        <span>Logo Verschuiven & Centreren</span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          handleOffsetXChange(0);
+                          handleOffsetYChange(0);
+                        }}
+                        className="text-[11px] text-[#6E6166] hover:text-[#2A2426] underline cursor-pointer"
+                      >
+                        Reset naar midden
+                      </button>
+                    </div>
+
+                    <p className="text-[11px] text-[#786D71]">
+                      Als je ver inzoomt, kun je hier de afbeelding naar links, rechts, boven of onder schuiven om het gewenste deel precies in beeld te brengen.
+                    </p>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      {/* Horizontaal (X) */}
+                      <div className="p-3 bg-[#FAF8F5] border border-[#E8DFD8] rounded-xl space-y-2">
+                        <div className="flex items-center justify-between text-[11px] font-medium text-[#463D40]">
+                          <span className="flex items-center gap-1">
+                            <ArrowLeft size={12} />
+                            <ArrowRight size={12} />
+                            <span>Horizontaal (Links / Rechts)</span>
+                          </span>
+                          <span className="font-bold text-[#2A2426]">{localOffsetX}px</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() => handleOffsetXChange(localOffsetX - 5)}
+                            className="w-6 h-6 flex items-center justify-center rounded bg-white border border-[#DDD0C6] text-xs hover:bg-[#F2EDE8] cursor-pointer"
+                            title="Naar links"
+                          >
+                            ◄
+                          </button>
+                          <input
+                            type="range"
+                            min="-150"
+                            max="150"
+                            step="2"
+                            value={localOffsetX}
+                            onChange={(e) => handleOffsetXChange(Number(e.target.value))}
+                            className="flex-1 accent-[#2A2426] cursor-pointer h-1.5 bg-[#E8DFD8] rounded"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => handleOffsetXChange(localOffsetX + 5)}
+                            className="w-6 h-6 flex items-center justify-center rounded bg-white border border-[#DDD0C6] text-xs hover:bg-[#F2EDE8] cursor-pointer"
+                            title="Naar rechts"
+                          >
+                            ►
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Verticaal (Y) */}
+                      <div className="p-3 bg-[#FAF8F5] border border-[#E8DFD8] rounded-xl space-y-2">
+                        <div className="flex items-center justify-between text-[11px] font-medium text-[#463D40]">
+                          <span className="flex items-center gap-1">
+                            <ArrowUp size={12} />
+                            <ArrowDown size={12} />
+                            <span>Verticaal (Omhoog / Omlaag)</span>
+                          </span>
+                          <span className="font-bold text-[#2A2426]">{localOffsetY}px</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() => handleOffsetYChange(localOffsetY - 5)}
+                            className="w-6 h-6 flex items-center justify-center rounded bg-white border border-[#DDD0C6] text-xs hover:bg-[#F2EDE8] cursor-pointer"
+                            title="Omhoog"
+                          >
+                            ▲
+                          </button>
+                          <input
+                            type="range"
+                            min="-150"
+                            max="150"
+                            step="2"
+                            value={localOffsetY}
+                            onChange={(e) => handleOffsetYChange(Number(e.target.value))}
+                            className="flex-1 accent-[#2A2426] cursor-pointer h-1.5 bg-[#E8DFD8] rounded"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => handleOffsetYChange(localOffsetY + 5)}
+                            className="w-6 h-6 flex items-center justify-center rounded bg-white border border-[#DDD0C6] text-xs hover:bg-[#F2EDE8] cursor-pointer"
+                            title="Omlaag"
+                          >
+                            ▼
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 3. LOGO FORMAAT IN MENUBALK */}
+                  <div className="p-4 bg-white border border-[#E8DDD2] rounded-2xl space-y-3 shadow-2xs">
+                    <div className="flex items-center justify-between text-xs font-bold text-[#2A2426]">
+                      <span className="flex items-center gap-1.5">
+                        <Maximize2 size={15} />
+                        <span>Logo Vakgrootte in Menubalk</span>
+                      </span>
+                      <span className="font-bold text-[#2A2426]">{localNavbarSize}px</span>
+                    </div>
+
+                    <div className="flex flex-wrap gap-2">
+                      {[
+                        { label: 'Compact', size: 44 },
+                        { label: 'Standaard', size: 54 },
+                        { label: 'Groot', size: 64 },
+                        { label: 'Extra Groot', size: 74 }
+                      ].map((preset) => (
+                        <button
+                          key={preset.size}
+                          type="button"
+                          onClick={() => handleNavbarSizeChange(preset.size)}
+                          className={`px-3 py-1.5 text-xs font-medium rounded-lg border transition-colors cursor-pointer ${
+                            localNavbarSize === preset.size
+                              ? 'bg-[#2A2426] text-white border-[#2A2426]'
+                              : 'bg-[#FAF7F2] text-[#4E4347] border-[#DDD0C6] hover:bg-[#EFE8E2]'
+                          }`}
+                        >
+                          {preset.label} ({preset.size}px)
+                        </button>
+                      ))}
+                    </div>
+
+                    <div className="pt-1">
+                      <input
+                        type="range"
+                        min="36"
+                        max="90"
+                        step="2"
+                        value={localNavbarSize}
+                        onChange={(e) => handleNavbarSizeChange(Number(e.target.value))}
+                        className="w-full accent-[#2A2426] cursor-pointer h-1.5 bg-[#EFE7E0] rounded"
+                      />
+                    </div>
+                  </div>
                 </div>
-              </div>
+              ) : null}
 
               {/* Bedrijfsnaam & E-mail */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">

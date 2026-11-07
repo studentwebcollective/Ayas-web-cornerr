@@ -268,7 +268,7 @@ export const SimpleContactPage: React.FC = () => {
       </div>
 
       <div className="text-xs text-[#7A6E72]">
-        E-mail contact: <a href={`mailto:${data.email || 'ayaswebcorner@gmail.com'}`} className="underline text-[#2A2426]">{data.email || 'ayaswebcorner@gmail.com'}</a> · Rotterdam
+        E-mail contact: <a href={`mailto:${(!data.email || data.email === 'aya.webcorner@gmail.com' || data.email === 'ayaswebcorner@gmail.com') ? 'ayasewebcorner@gmail.com' : data.email}`} className="underline text-[#2A2426]">{(!data.email || data.email === 'aya.webcorner@gmail.com' || data.email === 'ayaswebcorner@gmail.com') ? 'ayasewebcorner@gmail.com' : data.email}</a> · Rotterdam
       </div>
 
       {/* Direct Modal to review Algemene Voorwaarden & Disclaimer without losing form progress */}

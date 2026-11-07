@@ -30,6 +30,10 @@ const DEMO_WEBSITE_IDS = new Set([
 ]);
 
 function filterOutDemoData(siteData: SiteData): SiteData {
+  let email = siteData.email;
+  if (!email || email === 'aya.webcorner@gmail.com' || email === 'ayaswebcorner@gmail.com') {
+    email = 'ayasewebcorner@gmail.com';
+  }
   const cleanWebsites = (siteData.websites || []).filter(
     (w) => !DEMO_WEBSITE_IDS.has(w.id)
   );
@@ -38,6 +42,7 @@ function filterOutDemoData(siteData: SiteData): SiteData {
   );
   return {
     ...siteData,
+    email,
     websites: cleanWebsites,
     inquiries: cleanInquiries
   };
@@ -85,20 +90,32 @@ export const SiteContentProvider: React.FC<{ children: React.ReactNode }> = ({ c
   const [isSaved, setIsSaved] = useState(false);
   const [isCloudSynced, setIsCloudSynced] = useState(false);
   const isFirstLoadRef = useRef(true);
+  const firestoreTimerRef = useRef<any>(null);
 
-  // Helper to save to Firestore
-  const saveToFirestore = async (newData: SiteData) => {
-    try {
-      const sanitized = JSON.parse(JSON.stringify(newData));
-      // Remove inquiries from site content doc (inquiries live in their own collection)
-      delete sanitized.inquiries;
-      await setDoc(doc(db, 'site', 'content'), sanitized, { merge: true });
-      setIsCloudSynced(true);
-      setIsSaved(true);
-      const timer = setTimeout(() => setIsSaved(false), 2000);
-      return () => clearTimeout(timer);
-    } catch (err) {
-      console.warn('Could not sync to Firestore:', err);
+  // Helper to save to Firestore (debounced to ensure buttery smooth slider dragging)
+  const saveToFirestore = (newData: SiteData, immediate = false) => {
+    if (firestoreTimerRef.current) {
+      clearTimeout(firestoreTimerRef.current);
+    }
+
+    const performSave = async () => {
+      try {
+        const sanitized = JSON.parse(JSON.stringify(newData));
+        // Remove inquiries from site content doc (inquiries live in their own collection)
+        delete sanitized.inquiries;
+        await setDoc(doc(db, 'site', 'content'), sanitized, { merge: true });
+        setIsCloudSynced(true);
+        setIsSaved(true);
+        setTimeout(() => setIsSaved(false), 2000);
+      } catch (err) {
+        console.warn('Could not sync to Firestore:', err);
+      }
+    };
+
+    if (immediate) {
+      performSave();
+    } else {
+      firestoreTimerRef.current = setTimeout(performSave, 250);
     }
   };
 
@@ -111,9 +128,14 @@ export const SiteContentProvider: React.FC<{ children: React.ReactNode }> = ({ c
       (snapshot) => {
         if (snapshot.exists()) {
           const remoteData = snapshot.data();
+          const needsEmailUpdate = !remoteData.email || remoteData.email === 'aya.webcorner@gmail.com' || remoteData.email === 'ayaswebcorner@gmail.com';
           setData((prev) => {
             const merged = mergeDeep(prev, remoteData);
             const cleaned = filterOutDemoData(merged);
+            if (needsEmailUpdate) {
+              cleaned.email = 'ayasewebcorner@gmail.com';
+              saveToFirestore(cleaned, true);
+            }
             try {
               localStorage.setItem(STORAGE_KEY, JSON.stringify(cleaned));
             } catch (e) {

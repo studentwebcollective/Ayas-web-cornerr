@@ -21,9 +21,10 @@ export interface FormInquiry {
 
 export interface SiteData {
   logoImage: string; // Base64 or URL uploaded by user
-  logoScale: number; // 50 to 200 (zoom level in percentage)
-  logoOffsetX: number; // optional offset
-  logoOffsetY: number;
+  logoScale: number; // 50 to 800 (zoom level in percentage)
+  logoOffsetX: number; // horizontal offset in px
+  logoOffsetY: number; // vertical offset in px
+  logoNavbarSize?: number; // size in px in navbar (default 54)
   brandName: string;
   brandNameColor?: string; // Hex color for brand name next to logo
   subtitle: string;
@@ -82,10 +83,11 @@ export const defaultSiteData: SiteData = {
   logoScale: 100,
   logoOffsetX: 0,
   logoOffsetY: 0,
+  logoNavbarSize: 54,
   brandName: "Aya's Web Corner",
   brandNameColor: '#2A2426',
   subtitle: "Based in Rotterdam · Est. 06 2026",
-  email: "ayaswebcorner@gmail.com",
+  email: "ayasewebcorner@gmail.com",
   librarySubtitle: "Hier zie je voorbeelden van websites. Klik op een website om deze direct live te bekijken!",
   librarySubtitleSize: "small",
 

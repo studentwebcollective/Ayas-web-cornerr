@@ -41,29 +41,76 @@ function MainApp() {
     setAdminOpen(true);
   };
 
-  // Dynamically update browser favicon & apple-touch-icon to match the logo from admin panel
+  // Dynamically update browser favicon & apple-touch-icon to match the logo & zoom from admin panel
   useEffect(() => {
     const defaultFavicon = "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%232A2426'/><text x='16' y='22' font-size='18' font-family='serif' font-weight='bold' fill='%23FAF7F2' text-anchor='middle'>A</text></svg>";
-    const targetIcon = data.logoImage && data.logoImage.trim() !== '' ? data.logoImage : defaultFavicon;
 
-    // Update standard icon
     let iconLink = document.querySelector("link[rel~='icon']") as HTMLLinkElement | null;
     if (!iconLink) {
       iconLink = document.createElement('link');
       iconLink.rel = 'icon';
       document.head.appendChild(iconLink);
     }
-    iconLink.href = targetIcon;
 
-    // Update apple touch icon for iOS / Safari tabs & bookmarks
     let appleLink = document.querySelector("link[rel='apple-touch-icon']") as HTMLLinkElement | null;
     if (!appleLink) {
       appleLink = document.createElement('link');
       appleLink.rel = 'apple-touch-icon';
       document.head.appendChild(appleLink);
     }
-    appleLink.href = targetIcon;
-  }, [data.logoImage]);
+
+    if (!data.logoImage || data.logoImage.trim() === '') {
+      iconLink.href = defaultFavicon;
+      appleLink.href = defaultFavicon;
+      return;
+    }
+
+    // Render scaled and positioned logo to an offscreen canvas for crisp favicon matching navbar zoom
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => {
+      try {
+        const canvas = document.createElement('canvas');
+        canvas.width = 64;
+        canvas.height = 64;
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          ctx.clearRect(0, 0, 64, 64);
+          const scale = (data.logoScale || 100) / 100;
+          const boxSize = data.logoNavbarSize || 54;
+          const offX = ((data.logoOffsetX || 0) / boxSize) * 64;
+          const offY = ((data.logoOffsetY || 0) / boxSize) * 64;
+
+          ctx.save();
+          // Subtle rounded clip for clean aesthetic
+          ctx.beginPath();
+          if (typeof ctx.roundRect === 'function') {
+            ctx.roundRect(0, 0, 64, 64, 12);
+          } else {
+            ctx.rect(0, 0, 64, 64);
+          }
+          ctx.clip();
+
+          ctx.translate(32 + offX, 32 + offY);
+          ctx.scale(scale, scale);
+          ctx.drawImage(img, -32, -32, 64, 64);
+          ctx.restore();
+
+          const url = canvas.toDataURL('image/png');
+          if (iconLink) iconLink.href = url;
+          if (appleLink) appleLink.href = url;
+        }
+      } catch (e) {
+        if (iconLink) iconLink.href = data.logoImage;
+        if (appleLink) appleLink.href = data.logoImage;
+      }
+    };
+    img.onerror = () => {
+      if (iconLink) iconLink.href = data.logoImage;
+      if (appleLink) appleLink.href = data.logoImage;
+    };
+    img.src = data.logoImage;
+  }, [data.logoImage, data.logoScale, data.logoOffsetX, data.logoOffsetY, data.logoNavbarSize]);
 
   return (
     <div className="min-h-screen flex flex-col bg-[#FAF7F2] text-[#2A2426]">
