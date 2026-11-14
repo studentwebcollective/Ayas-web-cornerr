@@ -73,6 +73,27 @@ export const SimpleAdminModal: React.FC<SimpleAdminModalProps> = ({
     link: ''
   });
 
+  const [localScale, setLocalScale] = useState(data.logoScale || 100);
+  const [localOffsetX, setLocalOffsetX] = useState(data.logoOffsetX || 0);
+  const [localOffsetY, setLocalOffsetY] = useState(data.logoOffsetY || 0);
+  const [localNavbarSize, setLocalNavbarSize] = useState(data.logoNavbarSize || 54);
+
+  React.useEffect(() => {
+    setLocalScale(data.logoScale || 100);
+  }, [data.logoScale]);
+
+  React.useEffect(() => {
+    setLocalOffsetX(data.logoOffsetX || 0);
+  }, [data.logoOffsetX]);
+
+  React.useEffect(() => {
+    setLocalOffsetY(data.logoOffsetY || 0);
+  }, [data.logoOffsetY]);
+
+  React.useEffect(() => {
+    setLocalNavbarSize(data.logoNavbarSize || 54);
+  }, [data.logoNavbarSize]);
+
   if (!isOpen) return null;
 
   const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -129,27 +150,6 @@ export const SimpleAdminModal: React.FC<SimpleAdminModalProps> = ({
     { id: 'contact', label: 'Contact & Disclaimer' },
     { id: 'sync', label: '💾 Sync & Opslaan in Code' }
   ];
-
-  const [localScale, setLocalScale] = useState(data.logoScale || 100);
-  const [localOffsetX, setLocalOffsetX] = useState(data.logoOffsetX || 0);
-  const [localOffsetY, setLocalOffsetY] = useState(data.logoOffsetY || 0);
-  const [localNavbarSize, setLocalNavbarSize] = useState(data.logoNavbarSize || 54);
-
-  React.useEffect(() => {
-    setLocalScale(data.logoScale || 100);
-  }, [data.logoScale]);
-
-  React.useEffect(() => {
-    setLocalOffsetX(data.logoOffsetX || 0);
-  }, [data.logoOffsetX]);
-
-  React.useEffect(() => {
-    setLocalOffsetY(data.logoOffsetY || 0);
-  }, [data.logoOffsetY]);
-
-  React.useEffect(() => {
-    setLocalNavbarSize(data.logoNavbarSize || 54);
-  }, [data.logoNavbarSize]);
 
   const handleScaleChange = (val: number) => {
     const clamped = Math.max(50, Math.min(800, val));
